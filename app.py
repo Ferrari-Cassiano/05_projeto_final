@@ -105,6 +105,43 @@ if build_scatter_price_odo:  # Se a caixa de seleção for marcada
 
     # Exibir o gráfico Plotly interativo
     st.plotly_chart(fig_scatter, use_container_width=True)
+# .......................................................................
+
+# >>> INÍCIO DO NOVO GRÁFICO: Tipos de Veículos por Fabricante <<<
+
+# Novo subheader para organizar
+st.subheader('Análise por Fabricante e Tipo de Veículo')
+
+# 1. Adicionar uma caixa de seleção para ativar este gráfico
+build_manufacturer_type_chart = st.checkbox(
+    'Criar Gráfico de Tipos de Veículos por Fabricante')
+
+if build_manufacturer_type_chart:  # Se a caixa de seleção for marcada
+    st.write(
+        'Gerando gráfico de barras da distribuição de tipos de veículos por fabricante.')
+
+    # Esta linha (e as seguintes) deve estar indentada EXATAMENTE como a linha st.write acima.
+    # Geralmente, 4 espaços é o padrão.
+    car_data_filtered_manu_type = car_data.dropna(
+        subset=['manufacturer', 'type']).copy()
+
+    # Criar o gráfico de barras
+    fig_manu_type = px.histogram(
+        car_data_filtered_manu_type,
+        x="manufacturer",
+        color="type",
+        title="Tipos de Veículos por Fabricante",
+        labels={
+            "manufacturer": "Fabricante",
+            "type": "Tipo de Veículo",
+            "count": "Número de Veículos"
+        },
+        template="plotly_white"
+    )
+    fig_manu_type.update_layout(barmode='stack')
+    st.plotly_chart(fig_manu_type, use_container_width=True)
+
+# >>> FIM DO NOVO GRÁFICO <<<
 
 # ----------------------------------------------------
 # Fim do app.py
